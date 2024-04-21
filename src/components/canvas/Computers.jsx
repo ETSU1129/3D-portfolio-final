@@ -62,7 +62,14 @@ const ComputersCanvas = () => {
                 
             <Suspense fallback={<CanvasLoader />}>
             <fog attach="fog" args={["#d0d0d0",1,80]}/>
-
+                <OrbitControls
+                enableZoom={false}
+                maxPolarAngle={Math.PI / 2}
+                minPolarAngle={Math.PI / 2}
+                minAzimuthAngle={-Math.PI * 20 / 180} // 左に45度
+                maxAzimuthAngle={Math.PI * 85 / 180} // 右に25度
+                enableDamping={true}
+                />
                 <Model isMobile={isMobile} style={{ pointerEvents: 'auto' }}/>
             </Suspense>
             <Preload all />
