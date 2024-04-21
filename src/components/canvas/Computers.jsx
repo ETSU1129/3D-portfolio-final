@@ -51,14 +51,13 @@ const ComputersCanvas = () => {
   
 
   return (
-    
+    <div style={{ overflow: 'auto', height: '100vh' }}>
             <Canvas
             frameloop='demand'
             shadows
             dpr={[1, 2]}
             camera={{ position: [20, 3, 5], fov: 25 }}
             gl={{ preserveDrawingBuffer: true }}
-            style={{pointerEvents: 'none'}}
             >
                 
             <Suspense fallback={<CanvasLoader />}>
@@ -75,7 +74,7 @@ const ComputersCanvas = () => {
             </Suspense>
             <Preload all />
             </Canvas>
-    
+    </div>
   );
 };
 

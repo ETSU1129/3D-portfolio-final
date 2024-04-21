@@ -33,9 +33,9 @@ const Hero = () => {
 
 
 
-        <section className={`relative w-full h-screen mx-auto`}>
+        <section className={`relative w-full h-screen mx-auto`} >
         {/* div要素開始。絶対位置指定、全域、上から120px、最大幅7xl、自動マージン、スタイルのpaddingX適用、フレックスボックス、アイテムは開始位置から配置、ギャップ5 */}
-        <div className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 z-30 pointer-events-none`}>
+        <div   className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 z-30 pointer-events-none`}>
           {/* div要素。フレックスボックス、縦方向、アイテムは中央に配置、上マージン5 */}
           <div className='flex flex-col justify-center items-center mt-5'>
             {/* div要素。幅5、高さ5、丸みを帯びた全体、背景色#915EFF */}
@@ -49,7 +49,7 @@ const Hero = () => {
             {/* h1要素。スタイルのheroHeadTextとtext-whiteクラス適用 */}
             <h1 className={`${styles.heroHeadText} text-white `}>
               {/* 文字列 "Hi, I'm" と、span要素。背景色#915EFFクラス適用 */}
-              Hi, I'm <span className='text-[#915EFF] '>Kubota</span>
+              Hi, I'm <span>Kubota</span>
             </h1>
             {/* p要素。スタイルのheroSubTextとmt-2とtext-white-100クラス適用 */}
             <p className={`${styles.heroSubText} mt-2 text-white-100`}>
@@ -60,9 +60,7 @@ const Hero = () => {
             </p>
           </div>
         </div>
-
       <ComputersCanvas />
-
       {/* div要素開始。絶対位置指定、xs以上で下から10、それ以外は下から32、全幅、フレックスボックス、アイテムは中央に配置 */}
       <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
         {/* a要素。aboutへのリンク */}
