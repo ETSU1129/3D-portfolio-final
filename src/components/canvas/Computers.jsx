@@ -1,57 +1,54 @@
 import React, { Suspense, useEffect, useState } from "react";
+import { useGLTF, useTexture,Preload,OrbitControls,PresentationControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
-
 import CanvasLoader from "../Loader";
-
-const Computers = ({ isMobile }) => {
-  const computer = useGLTF("./desktop_pc/scene.gltf");
+// 他のインポート文
+const Model = ({ isMobile }) => {
+  const { nodes } = useGLTF("/roommodel002.glb");
+  const bakedTexture = useTexture('./bake_001.jpg');
+  const bakedTexture2 = useTexture('./bake_003.jpg');
+  bakedTexture.flipY = false;
+  bakedTexture2.flipY = false;
 
   return (
-    <mesh>
-      <hemisphereLight intensity={0.15} groundColor='black' />
-      <spotLight
-        position={[-20, 50, 10]}
-        angle={0.12}
-        penumbra={1}
-        intensity={1}
-        castShadow
-        shadow-mapSize={1024}
-      />
-      <pointLight intensity={1} />
-      <primitive
-        object={computer.scene}
-        scale={isMobile ? 0.7 : 0.75}
-        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
-      />
-    </mesh>
+    <>
+      <mesh
+        geometry={nodes.bakedmodel1.geometry}
+        scale={isMobile ? 0.1 : 0.3}
+        rotation-y={-6.5}
+        position-x={0}
+        position-y={-2.8}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
+      <mesh
+        geometry={nodes.bakedmodel2.geometry}
+        scale={isMobile ? 0.1 : 0.3}
+        rotation-y={-6.5}
+        position-x={0}
+        position-y={-2.8}
+      >
+        <meshBasicMaterial map={bakedTexture2} />
+      </mesh>
+    </>
   );
 };
 
 const ComputersCanvas = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // Add a listener for changes to the screen size
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-
-    // Set the initial value of the `isMobile` state variable
-    setIsMobile(mediaQuery.matches);
-
-    // Define a callback function to handle changes to the media query
-    const handleMediaQueryChange = (event) => {
-      setIsMobile(event.matches);
-    };
-
-    // Add the callback function as a listener for changes to the media query
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
-
-    // Remove the listener when the component is unmounted
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
-  }, []);
+    const [isMobile, setIsMobile] = useState(false);
+  
+    useEffect(() => {
+      const mediaQuery = window.matchMedia("(max-width: 500px)");
+      setIsMobile(mediaQuery.matches);
+      const handleMediaQueryChange = (event) => {
+        setIsMobile(event.matches);
+      };
+      mediaQuery.addEventListener("change", handleMediaQueryChange);
+      return () => {
+        mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      };
+    }, []);
+  
 
   return (
     <Canvas
@@ -61,15 +58,19 @@ const ComputersCanvas = () => {
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
     >
+        
       <Suspense fallback={<CanvasLoader />}>
+      <fog attach="fog" args={["#d0d0d0",1,80]}/>
         <OrbitControls
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
+          minAzimuthAngle={-Math.PI * 20 / 180} // 左に45度
+          maxAzimuthAngle={Math.PI * 85 / 180} // 右に25度
+          enableDamping={true}
         />
-        <Computers isMobile={isMobile} />
+        <Model isMobile={isMobile} />
       </Suspense>
-
       <Preload all />
     </Canvas>
   );
